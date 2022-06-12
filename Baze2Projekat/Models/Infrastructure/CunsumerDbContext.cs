@@ -7,23 +7,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsumerApp.Infrastructure
+namespace Models.Infrastructure
 {
-    public class CunsumerDbContext : DbContext
+    public class ConsumerDbContext : DbContext
     {
-        public CunsumerDbContext()
+        public ConsumerDbContext()
         {
 
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            var connString = @"Data Source=(localdb)\ProjectModels;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             optionsBuilder.UseSqlServer(connString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Fix>().HasNoKey();
+            modelBuilder.Entity<BorrowsEquipment>().HasNoKey();
+            modelBuilder.Entity<Bill>().HasOne(t => t.ConsumerMeter)
+                                       .WithMany(t => t.Bills)
+                                       .HasForeignKey(d => d.MeterId)
+                                       .IsRequired();
         }
 
         public virtual DbSet<Electrician> Electricians { get; set; }
@@ -35,6 +41,9 @@ namespace ConsumerApp.Infrastructure
         public virtual DbSet<SmartMeter> SmartMeters { get; set; }
         public virtual DbSet<AnalogMeter> AnalogMeters { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
+        public virtual DbSet<AnalogMeterReading> AnalogMeterReadings { set; get; }
+        public virtual DbSet<BorrowsEquipment> BorrowsEquipments { set; get; }
+        public virtual DbSet<Bill> Bills { set; get; }
 
 
     }

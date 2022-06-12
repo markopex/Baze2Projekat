@@ -21,6 +21,8 @@ namespace Models
         public MeterType Type { get; set; }
         [Required]
         public double PowerCount { get; set; }
+        
         public Consumer Consumer { get; set; }
+        public virtual List<Bill> Bills { get; set; }
     }
 }

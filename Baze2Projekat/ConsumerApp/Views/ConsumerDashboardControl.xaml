@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="ConsumerApp.Views.ConsumerDashboardControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ConsumerApp.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="equipmentViewSource"/>
+        <CollectionViewSource x:Key="borrowsEquipmentViewSource"/>
+        <CollectionViewSource x:Key="metersViewSource"/>
+        <CollectionViewSource x:Key="billsViewSource"/>
+    </UserControl.Resources>
+    <Grid>
+        <TabControl Width="770" Height="375" VerticalAlignment="Top">
+            <TabItem Header="Oprema">
+                <DataGrid x:Name="KontinentDataGrid"
+                          AutoGenerateColumns="False"
+                          ItemsSource="{Binding Source={StaticResource equipmentViewSource}}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Id}" 
+                                            Header="Id"
+                                            IsReadOnly="True"/>
+                        <DataGridTextColumn Binding="{Binding Name}" 
+                                            Header="Naziv"/>
+                        <DataGridTextColumn Binding="{Binding Description}"
+                                            Header="Opis"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Racuni">
+                <DataGrid x:Name="BillsDataGrid"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="False"
+                          ItemsSource="{Binding Source={StaticResource billsViewSource}}">
+                    <DataGrid.Columns>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Moji Strujomeri">
+                <DataGrid x:Name="MojiStrujomeriDataGrid"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          ItemsSource="{Binding Source={StaticResource metersViewSource}}">
+                    <DataGrid.Columns>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Zaduzena oprema">
+                <DataGrid x:Name="ProstiranjaDataGrid"
+                          AutoGenerateColumns="False"
+                          ItemsSource="{Binding Source={StaticResource borrowsEquipmentViewSource}}">
+                    <DataGrid.Columns>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Moji kvarovi">
+                <DataGrid x:Name="FaultsDataGrid"
+                          AutoGenerateColumns="False"
+                          ItemsSource="{Binding Source={StaticResource borrowsEquipmentViewSource}}">
+                    <DataGrid.Columns>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

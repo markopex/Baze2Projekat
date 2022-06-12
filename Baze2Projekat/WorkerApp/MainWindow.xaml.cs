@@ -1,5 +1,4 @@
 ﻿using Models.Infrastructure;
-using ConsumerApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Models;
+using WorkerApp.Views;
 
-namespace ConsumerApp
+namespace WorkerApp
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -24,20 +23,10 @@ namespace ConsumerApp
     public partial class MainWindow : Window
     {
         public static ConsumerDbContext ConsumerDbContext { set; get; } = new ConsumerDbContext();
-        public static Consumer Consumer { set; get; } = null;
         public MainWindow()
         {
             InitializeComponent();
-            this.MainGrid.Children.Clear();
-            var login = new Login(OnSuccessfullLoggedIn);
-            this.MainGrid.Children.Add(login);
-        }
-
-        public bool OnSuccessfullLoggedIn()
-        {
-            this.MainGrid.Children.Clear();
-            this.MainGrid.Children.Add(new ConsumerDashboardControl());
-            return true;
+            this.ViewGrid.Children.Add(new ElectricianDashboardControl());
         }
     }
 }

@@ -7,21 +7,17 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class Bill
+    public class AnalogMeterReading
     {
         [Required]
         public int Id { get; set; }
         [Required]
-        public DateTime DateCreated { get; set; }
+        public DateTime Date { get; set; }
         [Required]
-        public double Price { get; set; }
+        public double ReadingPower { get; set; }
         [Required]
-        public double ConsumedPower { get; set; }
+        public Electrician Electrician { get; set; }
         [Required]
-        public int Month { get; set; }
-        [Required]
-        public int MeterId { get; set; }
-        public virtual Meter ConsumerMeter { get; set; }
-
+        public AnalogMeter AnalogMeter { get; set; }
     }
 }
