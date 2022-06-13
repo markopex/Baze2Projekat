@@ -225,7 +225,9 @@
                             <DataGridTextColumn Binding="{Binding Opis}" 
                                             Width="100"
                                             Header="Opis"/>
-                            
+                            <DataGridTextColumn Binding="{Binding Status}" 
+                                            Width="100"
+                                            Header="Status"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>

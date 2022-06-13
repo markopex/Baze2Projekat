@@ -83,12 +83,6 @@ namespace TestApp2
 
                 entity.Property(e => e.PotId).HasColumnName("POT_ID");
 
-                entity.Property(e => e.Status)
-                    .IsRequired()
-                    .HasMaxLength(1)
-                    .HasColumnName("STATUS")
-                    .IsFixedLength(true);
-
                 entity.HasOne(d => d.Pot)
                     .WithMany(p => p.Kvars)
                     .HasForeignKey(d => d.PotId)
