@@ -1,0 +1,235 @@
+﻿<UserControl x:Class="RadnikApp.Views.Dashboard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RadnikApp.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="potrosaciViewSource"/>
+        <CollectionViewSource x:Key="strujomeriViewSource"/>
+        <CollectionViewSource x:Key="tipoviStrujomeraViewSource"/>
+        <CollectionViewSource x:Key="radniciViewSource"/>
+        <CollectionViewSource x:Key="odsustvaViewSource"/>
+        <CollectionViewSource x:Key="opremaViewSource"/>
+        <CollectionViewSource x:Key="zaduzenjeViewSource"/>
+        <CollectionViewSource x:Key="kvaroviViewSource"/>
+    </UserControl.Resources>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button Height="30" Margin="10" x:Name="btnRefresh" Click="btnRefresh_Click" Width="80">Osvezi</Button>
+            <Button Height="30" Margin="10" x:Name="btnSave" Click="btnSave_Click" Width="150">Sacuvaj Promene</Button>
+        </StackPanel>
+        <TabControl VerticalAlignment="Top">
+            <TabItem Header="Postosaci">
+                <StackPanel>
+                    <DataGrid x:Name="PotrosacDataGrid"
+                          AutoGenerateColumns="False"
+                          Height="450"
+                          ItemsSource="{Binding Source={StaticResource potrosaciViewSource}}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding PotId}" 
+                                            Header="Id"
+                                            Width="100"
+                                            IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Naziv}" 
+                                            Width="100"
+                                            Header="Naziv"/>
+                            <DataGridTextColumn Binding="{Binding Sifra}" 
+                                            Width="100"
+                                            Header="Sifra"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Strujomeri">
+                <StackPanel>
+                    <DataGrid x:Name="StrujomeriDataGrid"
+                          AutoGenerateColumns="False"
+                          Height="450"
+                          IsReadOnly="False"
+                          ItemsSource="{Binding Source={StaticResource strujomeriViewSource}}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Broj}" 
+                                            Header="Broj strujomera"
+                                            Width="100"
+                                            IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Snaga}" 
+                                            Width="100"
+                                            Header="Snaga"/>
+                            <DataGridTextColumn Binding="{Binding UkupnoKwh}" 
+                                            Width="100"
+                                            Header="Ukupno Kwh"/>
+                            <DataGridTextColumn Binding="{Binding Potrosac}" 
+                                            Width="100"
+                                            IsReadOnly="True"
+                                            Header="ID Potrosaca"/>
+                            <DataGridComboBoxColumn 
+                                            Header="Tip strujomera"
+                                            Width="100"
+                                            ItemsSource="{Binding Source={StaticResource tipoviStrujomeraViewSource}}"
+                                            DisplayMemberPath="Naziv"
+                                            SelectedValueBinding="{Binding Tip}"
+                                            SelectedValuePath="Tip"/>
+                            <DataGridComboBoxColumn 
+                                            Header="Potrosac"
+                                            Width="100"
+                                            ItemsSource="{Binding Source={StaticResource potrosaciViewSource}}"
+                                            DisplayMemberPath="Naziv"
+                                            SelectedValueBinding="{Binding Potrosac}"
+                                            SelectedValuePath="PotId"/>
+                            <DataGridTextColumn Binding="{Binding TrKwh}" 
+                                            Width="100"
+                                            Header="Tranutna potrosnja"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Radnici">
+                <StackPanel>
+                    <DataGrid x:Name="RadniciDataGrid"
+                          AutoGenerateColumns="False"
+                          Height="450"
+                          IsReadOnly="False"
+                          ItemsSource="{Binding Source={StaticResource radniciViewSource}}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Jmbg}" 
+                                            Header="JMBG radnika"
+                                            Width="100"
+                                            IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Ime}" 
+                                            Width="100"
+                                            Header="Ime i prezime"/>
+                            <DataGridTextColumn Binding="{Binding DatumRodj}" 
+                                            Width="100"
+                                            Header="Datum Rodjenja"/>
+                            <DataGridTextColumn Binding="{Binding Plata}" 
+                                            Width="100"
+                                            Header="Plata"/>
+                            <DataGridTextColumn Binding="{Binding RadnoMesto}" 
+                                            Width="100"
+                                            Header="Radno mesto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Odsustva">
+                <StackPanel>
+                    <DataGrid x:Name="OdsustvaDataGrid"
+                          AutoGenerateColumns="False"
+                          Height="450"
+                          IsReadOnly="False"
+                          ItemsSource="{Binding Source={StaticResource odsustvaViewSource}}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding OdsId}" 
+                                            Header="ID odsustva"
+                                            Width="100"
+                                            IsReadOnly="True"/>
+                            <DataGridComboBoxColumn 
+                                            Header="Radnik"
+                                            Width="100"
+                                            ItemsSource="{Binding Source={StaticResource radniciViewSource}}"
+                                            DisplayMemberPath="Ime"
+                                            SelectedValueBinding="{Binding RadnikJmbg}"
+                                            SelectedValuePath="Jmbg"/>
+                            <DataGridTextColumn Binding="{Binding DatumOd}" 
+                                            Width="100"
+                                            Header="Datum pocetka"/>
+                            <DataGridTextColumn Binding="{Binding DatumDo}" 
+                                            Width="100"
+                                            Header="Datum kraja"/>
+                            <DataGridTextColumn Binding="{Binding Placeno}" 
+                                            Width="100"
+                                            Header="Placeno?"/>
+                            <DataGridTextColumn Binding="{Binding Razlog}" 
+                                            Width="100"
+                                            Header="Razlog"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Oprema">
+                <StackPanel>
+                    <DataGrid x:Name="OpremaDataGrid"
+                          AutoGenerateColumns="False"
+                          Height="450"
+                          IsReadOnly="False"
+                          ItemsSource="{Binding Source={StaticResource opremaViewSource}}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding OprId}" 
+                                            Header="ID opreme"
+                                            Width="100"
+                                            IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Naziv}" 
+                                            Width="100"
+                                            Header="Naziv"/>
+                            <DataGridTextColumn Binding="{Binding Opis}" 
+                                            Width="100"
+                                            Header="Opis"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Zaduzenje opreme">
+                <StackPanel>
+                    <DataGrid x:Name="ZaduzenjeDataGrid"
+                          AutoGenerateColumns="False"
+                          Height="450"
+                          IsReadOnly="False"
+                          ItemsSource="{Binding Source={StaticResource zaduzenjeViewSource}}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Datum}" 
+                                            Header="Datum zaduzenja"
+                                            Width="100"
+                                            IsReadOnly="True"/>
+                            <DataGridComboBoxColumn 
+                                            Header="Radnik"
+                                            Width="150"
+                                            ItemsSource="{Binding Source={StaticResource radniciViewSource}}"
+                                            DisplayMemberPath="Ime"
+                                            SelectedValueBinding="{Binding ElektricarId}"
+                                            SelectedValuePath="Jmbg"/>
+                            <DataGridComboBoxColumn 
+                                            Header="Oprema"
+                                            Width="150"
+                                            ItemsSource="{Binding Source={StaticResource opremaViewSource}}"
+                                            DisplayMemberPath="Naziv"
+                                            SelectedValueBinding="{Binding OprId}"
+                                            SelectedValuePath="OprId"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Kvarovi">
+                <StackPanel>
+                    <DataGrid x:Name="KvaroviDataGrid"
+                          AutoGenerateColumns="False"
+                          Height="450"
+                          IsReadOnly="False"
+                          ItemsSource="{Binding Source={StaticResource kvaroviViewSource}}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding BrojKv}" 
+                                            Width="100"
+                                            Header="BrojKv"/>
+                            <DataGridComboBoxColumn 
+                                            Header="Potrosac"
+                                            Width="100"
+                                            ItemsSource="{Binding Source={StaticResource potrosaciViewSource}}"
+                                            DisplayMemberPath="Naziv"
+                                            SelectedValueBinding="{Binding PotId}"
+                                            SelectedValuePath="PotId"/>
+                            <DataGridTextColumn Binding="{Binding DatumPr}" 
+                                            Width="100"
+                                            Header="Datum prijave"/>
+                            <DataGridTextColumn Binding="{Binding Opis}" 
+                                            Width="100"
+                                            Header="Opis"/>
+                            
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</UserControl>
