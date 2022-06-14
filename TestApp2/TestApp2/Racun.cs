@@ -14,5 +14,13 @@ namespace TestApp2
         public decimal Iznos { get; set; }
         public decimal Kwh { get; set; }
         public int Period { get; set; }
+
+        public string PeriodStr
+        {
+            get
+            {
+                return this.Period % 100 + "/" + this.Period / 100;
+            }
+        }
     }
 }

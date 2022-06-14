@@ -296,12 +296,32 @@
                         <DataGrid.Columns>
                         </DataGrid.Columns>
                     </DataGrid>
-                    
+
                 </StackPanel>
             </TabItem>
-
             <TabItem Header="Racuni">
                 <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <StackPanel>
+                            <TextBlock TextAlignment="Center" FontSize="24" Margin="0,10,0,0" Text="Generisanje racuna"/>
+                            <TextBlock TextAlignment="Center" Margin="5" Text="Za period"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Content="Godina:"/>
+                                <Label Grid.Row="1" Grid.Column="0" Content="Mesec:"/>
+                                <TextBox x:Name="txtBlGodina" Grid.Row="0" Grid.Column="1" />
+                                <TextBox x:Name="txtBlMesec"  Grid.Row="1" Grid.Column="1" />
+                            </Grid>
+                            <Button x:Name="btnGenerisiRacune" Width="200" Margin="10" Click="btnGenerisiRacune_Click">Generisi</Button>
+                        </StackPanel>
+                    </StackPanel>
                     <DataGrid x:Name="RacuniDataGrid"
                           AutoGenerateColumns="False"
                           Height="450"
@@ -333,6 +353,9 @@
                             <DataGridTextColumn Binding="{Binding Iznos}" 
                                             Width="100"
                                             Header="Iznos"/>
+                            <DataGridTextColumn Binding="{Binding PeriodStr}" 
+                                            Width="100"
+                                            Header="Period"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>

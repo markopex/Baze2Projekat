@@ -185,5 +185,25 @@ namespace RadnikApp.Views
             dbContext.SaveChanges();
             RefreshData();
         }
+
+        private void GenerisiRacune(int period)
+        {
+            dbContext.Database.ExecuteSqlRaw($"DECLARE @RC int; EXECUTE @RC = [dbo].[GenerisiRacune] @Period={period}");
+            RefreshData();
+        }
+
+        private void btnGenerisiRacune_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var period = int.Parse(txtBlGodina.Text) * 100 + int.Parse(txtBlMesec.Text);
+                GenerisiRacune(period);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+        }
     }
 }
