@@ -10,7 +10,6 @@ namespace TestApp2
         public Strujomer()
         {
             Ocitavanjes = new HashSet<Ocitavanje>();
-            Racuns = new HashSet<Racun>();
         }
 
         public int Broj { get; set; }
@@ -22,6 +21,5 @@ namespace TestApp2
 
         public virtual Potrosac PotrosacNavigation { get; set; }
         public virtual ICollection<Ocitavanje> Ocitavanjes { get; set; }
-        public virtual ICollection<Racun> Racuns { get; set; }
     }
 }

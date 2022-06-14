@@ -31,6 +31,9 @@ namespace RadnikApp.Views
         private CollectionViewSource opremaViewSource;
         private CollectionViewSource zaduzenjeViewSource;
         private CollectionViewSource kvaroviViewSource;
+        private CollectionViewSource ocitavanjaViewSource;
+        private CollectionViewSource racuniViewSource;
+        private StatistikaPotrosaca StatistikaPotrosaca { get; set; }
 
 
         private masterContext dbContext;
@@ -46,6 +49,8 @@ namespace RadnikApp.Views
             opremaViewSource = (CollectionViewSource)FindResource(nameof(opremaViewSource));
             zaduzenjeViewSource = (CollectionViewSource)FindResource(nameof(zaduzenjeViewSource));
             kvaroviViewSource = (CollectionViewSource)FindResource(nameof(kvaroviViewSource));
+            ocitavanjaViewSource = (CollectionViewSource)FindResource(nameof(ocitavanjaViewSource));
+            racuniViewSource = (CollectionViewSource)FindResource(nameof(racuniViewSource));
 
             LoadData();
         }
@@ -88,6 +93,12 @@ namespace RadnikApp.Views
             dbContext.Kvars.Load();
             kvaroviViewSource.Source = dbContext.Kvars.Local.ToObservableCollection();
 
+            dbContext.Ocitavanjes.Load();
+            ocitavanjaViewSource.Source = dbContext.Ocitavanjes.Local.ToObservableCollection();
+
+            dbContext.Racuns.Load();
+            racuniViewSource.Source = dbContext.Racuns.Local.ToObservableCollection();
+
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
@@ -101,6 +112,11 @@ namespace RadnikApp.Views
             LoadData();
         }
 
+        private StatistikaPotrosaca GetStats(int potrosacId)
+        {
+            return dbContext.StatistikaPotrosaca(potrosacId).FirstAsync().Result;
+        }
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -111,6 +127,63 @@ namespace RadnikApp.Views
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void cmbBoxStatistikaPotrosaca_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(cmbBoxStatistikaPotrosaca.SelectedValue != null)
+            {
+                try
+                {
+                    var stats = dbContext.StatistikaPotrosaca((cmbBoxStatistikaPotrosaca.SelectedItem as Potrosac).PotId).FirstAsync().Result;
+                    lblPot_Id.Content = stats.Pot_Id;
+                    lblBrojStrujomera.Content = stats.BrojStrujomera;
+                    lblNazivPotrosaca.Content = stats.Naziv;
+                    lblUkupnaPotrosnja.Content = stats.Ukupno;
+                }catch(Exception ex)
+                {
+                    lblPot_Id.Content = String.Empty;
+                    lblBrojStrujomera.Content = String.Empty;
+                    lblNazivPotrosaca.Content = String.Empty;
+                    lblUkupnaPotrosnja.Content = String.Empty;
+                }
+                
+            }
+
+        }
+
+        private void btnGenerisiOcitavanja_Click(object sender, RoutedEventArgs e)
+        {
+            var datum = DateTime.Now;
+            Random rnd = new Random();
+            try
+            {
+                datum = new DateTime(int.Parse(txtBlockGodina.Text), int.Parse(txtBlockMesec.Text), 1);
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+            var strujomeri = dbContext.Strujomers.ToList();
+            foreach (var strujomer in strujomeri)
+            {
+
+                var ocitavanje = new Ocitavanje()
+                {
+                    Strujomer = strujomer.Broj,
+                    Datum = datum,
+                    Period = datum.Year * 100 + datum.Month,
+                    Kwh = strujomer.UkupnoKwh + (decimal)(rnd.NextDouble() * 400 + 100)
+                };
+                // ako je strujomer analogni
+                if(strujomer.Tip == 1)
+                {
+                    ocitavanje.Elektricar = dbContext.Elektricars.First().Jmbg;
+                }
+                dbContext.Ocitavanjes.Add(ocitavanje);
+            }
+            dbContext.SaveChanges();
+            RefreshData();
         }
     }
 }

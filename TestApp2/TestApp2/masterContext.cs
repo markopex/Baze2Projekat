@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -62,14 +63,11 @@ namespace TestApp2
 
             modelBuilder.Entity<Kvar>(entity =>
             {
-                entity.HasKey(e => e.BrojKv)
-                    .HasName("PK_KVAR");
+                entity.HasKey(e => e.BrojKv);
 
-                entity.ToTable("Kvar");
+                entity.ToTable("KVAR");
 
-                entity.Property(e => e.BrojKv)
-                    .ValueGeneratedNever()
-                    .HasColumnName("BROJ_KV");
+                entity.Property(e => e.BrojKv).HasColumnName("BROJ_KV");
 
                 entity.Property(e => e.DatumPr)
                     .HasColumnType("datetime")
@@ -87,15 +85,14 @@ namespace TestApp2
                     .WithMany(p => p.Kvars)
                     .HasForeignKey(d => d.PotId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Kvar_fk0");
+                    .HasConstraintName("KVAR_fk0");
             });
 
             modelBuilder.Entity<Ocitavanje>(entity =>
             {
-                entity.HasKey(e => e.Datum)
-                    .HasName("PK_OCITAVANJE");
-
                 entity.ToTable("Ocitavanje");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Datum)
                     .HasColumnType("datetime")
@@ -107,12 +104,13 @@ namespace TestApp2
                     .HasColumnType("decimal(18, 0)")
                     .HasColumnName("KWH");
 
+                entity.Property(e => e.Period).HasColumnName("PERIOD");
+
                 entity.Property(e => e.Strujomer).HasColumnName("STRUJOMER");
 
                 entity.HasOne(d => d.ElektricarNavigation)
                     .WithMany(p => p.Ocitavanjes)
                     .HasForeignKey(d => d.Elektricar)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Ocitavanje_fk1");
 
                 entity.HasOne(d => d.StrujomerNavigation)
@@ -129,9 +127,7 @@ namespace TestApp2
 
                 entity.ToTable("Odsustvo");
 
-                entity.Property(e => e.OdsId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ODS_ID");
+                entity.Property(e => e.OdsId).HasColumnName("ODS_ID");
 
                 entity.Property(e => e.DatumDo)
                     .HasColumnType("datetime")
@@ -165,9 +161,7 @@ namespace TestApp2
 
                 entity.ToTable("Oprema");
 
-                entity.Property(e => e.OprId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("OPR_ID");
+                entity.Property(e => e.OprId).HasColumnName("OPR_ID");
 
                 entity.Property(e => e.Naziv)
                     .IsRequired()
@@ -184,9 +178,9 @@ namespace TestApp2
 
             modelBuilder.Entity<Popravlja>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("Popravlja");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.BrojKv).HasColumnName("BROJ_KV");
 
@@ -197,13 +191,13 @@ namespace TestApp2
                 entity.Property(e => e.Radnik).HasColumnName("RADNIK");
 
                 entity.HasOne(d => d.BrojKvNavigation)
-                    .WithMany()
+                    .WithMany(p => p.Popravljas)
                     .HasForeignKey(d => d.BrojKv)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Popravlja_fk0");
 
                 entity.HasOne(d => d.RadnikNavigation)
-                    .WithMany()
+                    .WithMany(p => p.Popravljas)
                     .HasForeignKey(d => d.Radnik)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Popravlja_fk1");
@@ -219,9 +213,7 @@ namespace TestApp2
                 entity.HasIndex(e => e.Naziv, "UQ__Potrosac__A371AEE08CF8CE07")
                     .IsUnique();
 
-                entity.Property(e => e.PotId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("POT_ID");
+                entity.Property(e => e.PotId).HasColumnName("POT_ID");
 
                 entity.Property(e => e.Naziv)
                     .IsRequired()
@@ -243,9 +235,7 @@ namespace TestApp2
 
                 entity.ToTable("Racun");
 
-                entity.Property(e => e.BrojRacuna)
-                    .ValueGeneratedNever()
-                    .HasColumnName("BROJ_RACUNA");
+                entity.Property(e => e.BrojRacuna).HasColumnName("BROJ_RACUNA");
 
                 entity.Property(e => e.Datum)
                     .HasColumnType("datetime")
@@ -259,15 +249,11 @@ namespace TestApp2
                     .HasColumnType("decimal(18, 0)")
                     .HasColumnName("KWH");
 
-                entity.Property(e => e.Mesec).HasColumnName("MESEC");
+                entity.Property(e => e.Period).HasColumnName("PERIOD");
+
+                entity.Property(e => e.Potrosac).HasColumnName("POTROSAC");
 
                 entity.Property(e => e.StrujomerBroj).HasColumnName("STRUJOMER_BROJ");
-
-                entity.HasOne(d => d.StrujomerBrojNavigation)
-                    .WithMany(p => p.Racuns)
-                    .HasForeignKey(d => d.StrujomerBroj)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Racun_fk0");
             });
 
             modelBuilder.Entity<Radnik>(entity =>
@@ -277,9 +263,7 @@ namespace TestApp2
 
                 entity.ToTable("Radnik");
 
-                entity.Property(e => e.Jmbg)
-                    .ValueGeneratedNever()
-                    .HasColumnName("JMBG");
+                entity.Property(e => e.Jmbg).HasColumnName("JMBG");
 
                 entity.Property(e => e.DatumRodj)
                     .HasColumnType("datetime")
@@ -307,9 +291,7 @@ namespace TestApp2
 
                 entity.ToTable("Strujomer");
 
-                entity.Property(e => e.Broj)
-                    .ValueGeneratedNever()
-                    .HasColumnName("BROJ");
+                entity.Property(e => e.Broj).HasColumnName("BROJ");
 
                 entity.Property(e => e.Potrosac).HasColumnName("POTROSAC");
 
@@ -336,9 +318,9 @@ namespace TestApp2
 
             modelBuilder.Entity<Zaduzuje>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("Zaduzuje");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Datum)
                     .HasColumnType("datetime")
@@ -349,13 +331,13 @@ namespace TestApp2
                 entity.Property(e => e.OprId).HasColumnName("OPR_ID");
 
                 entity.HasOne(d => d.Elektricar)
-                    .WithMany()
+                    .WithMany(p => p.Zaduzujes)
                     .HasForeignKey(d => d.ElektricarId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Zaduzuje_fk0");
 
                 entity.HasOne(d => d.Opr)
-                    .WithMany()
+                    .WithMany(p => p.Zaduzujes)
                     .HasForeignKey(d => d.OprId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Zaduzuje_fk1");
@@ -363,7 +345,8 @@ namespace TestApp2
 
             OnModelCreatingPartial(modelBuilder);
         }
-
+        public IQueryable<StatistikaPotrosaca> StatistikaPotrosaca(int id) =>
+             Set<StatistikaPotrosaca>().FromSqlInterpolated($"select * from [dbo].[StatistikaPotrosaca]({id})");
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

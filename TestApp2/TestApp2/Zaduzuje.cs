@@ -10,6 +10,7 @@ namespace TestApp2
         public DateTime Datum { get; set; }
         public int ElektricarId { get; set; }
         public int OprId { get; set; }
+        public int Id { get; set; }
 
         public virtual Elektricar Elektricar { get; set; }
         public virtual Oprema Opr { get; set; }

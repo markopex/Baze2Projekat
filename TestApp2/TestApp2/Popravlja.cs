@@ -7,6 +7,7 @@ namespace TestApp2
 {
     public partial class Popravlja
     {
+        public int Id { get; set; }
         public DateTime Datum { get; set; }
         public int BrojKv { get; set; }
         public int Radnik { get; set; }

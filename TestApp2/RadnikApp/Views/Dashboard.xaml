@@ -15,6 +15,8 @@
         <CollectionViewSource x:Key="opremaViewSource"/>
         <CollectionViewSource x:Key="zaduzenjeViewSource"/>
         <CollectionViewSource x:Key="kvaroviViewSource"/>
+        <CollectionViewSource x:Key="ocitavanjaViewSource"/>
+        <CollectionViewSource x:Key="racuniViewSource"/>
     </UserControl.Resources>
     <StackPanel>
         <StackPanel Orientation="Horizontal">
@@ -206,7 +208,7 @@
                     <DataGrid x:Name="KvaroviDataGrid"
                           AutoGenerateColumns="False"
                           Height="450"
-                          IsReadOnly="False"
+                          IsReadOnly="True"
                           ItemsSource="{Binding Source={StaticResource kvaroviViewSource}}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding BrojKv}" 
@@ -228,6 +230,109 @@
                             <DataGridTextColumn Binding="{Binding Status}" 
                                             Width="100"
                                             Header="Status"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Statistika Potrosaca">
+                <StackPanel Margin="10">
+                    <ComboBox 
+                        x:Name="cmbBoxStatistikaPotrosaca"
+                        Margin="10"
+                        Width="200"
+                        ItemsSource="{Binding Source={StaticResource potrosaciViewSource}}"
+                        SelectionChanged="cmbBoxStatistikaPotrosaca_SelectionChanged"
+                        DisplayMemberPath="Naziv"
+                        SelectedValuePath="PotId"/>
+                    <Grid Width="200">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Content="ID Potrosaca:"/>
+                        <Label Grid.Row="1" Grid.Column="0" Content="Naziv Potrosaca:"/>
+                        <Label Grid.Row="2" Grid.Column="0" Content="Broj strujomera:"/>
+                        <Label Grid.Row="3" Grid.Column="0" Content="Ukupna potrosnja:"/>
+                        <Label x:Name="lblPot_Id" Grid.Row="0" Grid.Column="1" Content=""/>
+                        <Label x:Name="lblNazivPotrosaca" Grid.Row="1" Grid.Column="1" Content=""/>
+                        <Label x:Name="lblBrojStrujomera" Grid.Row="2" Grid.Column="1" Content=""/>
+                        <Label x:Name="lblUkupnaPotrosnja" Grid.Row="3" Grid.Column="1" Content=""/>
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Ocitavanje Strujomera">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Content="Godina:"/>
+                                <Label Grid.Row="1" Grid.Column="0" Content="Mesec:"/>
+                                <TextBox x:Name="txtBlockGodina" Grid.Row="0" Grid.Column="1" />
+                                <TextBox x:Name="txtBlockMesec"  Grid.Row="1" Grid.Column="1" />
+                            </Grid>
+                            <Button x:Name="btnGenerisiOcitavanja" Width="200" Margin="10" Click="btnGenerisiOcitavanja_Click">Generisi ocitavanja</Button>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <DataGrid x:Name="OcitavanjaDataGrid"
+                          AutoGenerateColumns="True"
+                          Height="450"
+                          IsReadOnly="True"
+                          ItemsSource="{Binding Source={StaticResource ocitavanjaViewSource}}">
+                        <DataGrid.Columns>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="Racuni">
+                <StackPanel>
+                    <DataGrid x:Name="RacuniDataGrid"
+                          AutoGenerateColumns="False"
+                          Height="450"
+                          IsReadOnly="True"
+                          ItemsSource="{Binding Source={StaticResource racuniViewSource}}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding StrujomerBroj}" 
+                                            Header="Broj strujomera"
+                                            Width="100"
+                                            IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding BrojRacuna}" 
+                                            Header="Broj racuna"
+                                            Width="100"
+                                            IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Datum}" 
+                                            Width="100"
+                                            Header="Datum"/>
+                            <DataGridTextColumn Binding="{Binding Kwh}" 
+                                            Width="100"
+                                            IsReadOnly="True"
+                                            Header="Ukupna potrosnja(Kwh)"/>
+                            <DataGridComboBoxColumn 
+                                            Header="Potrosac"
+                                            Width="100"
+                                            ItemsSource="{Binding Source={StaticResource potrosaciViewSource}}"
+                                            DisplayMemberPath="Naziv"
+                                            SelectedValueBinding="{Binding Potrosac}"
+                                            SelectedValuePath="PotId"/>
+                            <DataGridTextColumn Binding="{Binding Iznos}" 
+                                            Width="100"
+                                            Header="Iznos"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>

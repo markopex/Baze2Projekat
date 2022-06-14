@@ -1,13 +1,21 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace TestApp2
 {
     internal class Program
     {
-        private static masterContext dbContext = new masterContext();
+        //private static masterContext dbContext = new masterContext();
+        private static int GetStats(int potrosacId)
+        {
+            //return dbContext.Database.ExecuteSqlRaw($"select * from [dbo].[StatistikaPotrosaca]({potrosacId})");
+            return 0;
+        }
         static void Main(string[] args)
         {
-
+            //var retVAl = GetStats(1);
+            //Console.WriteLine(dbContext.StatistikaPotrosaca(1).FirstAsync().Result);
+            /*
             var radnik1 = new Radnik()
             {
                 Jmbg = 1,
@@ -257,7 +265,7 @@ namespace TestApp2
 
 
 
-            dbContext.SaveChanges();
+            dbContext.SaveChanges();*/
         }
     }
 }
