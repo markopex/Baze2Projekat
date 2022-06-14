@@ -43,6 +43,10 @@ namespace TestApp2
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
+            modelBuilder.Entity<StatistikaPotrosaca>( entity => {
+                entity.HasKey(i => i.Pot_Id);
+            });
+
             modelBuilder.Entity<Elektricar>(entity =>
             {
                 entity.HasKey(e => e.Jmbg)

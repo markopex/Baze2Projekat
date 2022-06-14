@@ -9,7 +9,6 @@ namespace TestApp2
 {
     public class StatistikaPotrosaca
     {
-        [Key]
         public int Pot_Id { get; set; }
         public string Naziv { get; set; }
         public int BrojStrujomera { get; set; }
