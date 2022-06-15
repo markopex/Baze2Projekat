@@ -10,6 +10,7 @@ namespace TestApp2
         public Potrosac()
         {
             Kvars = new HashSet<Kvar>();
+            Racuns = new HashSet<Racun>();
             Strujomers = new HashSet<Strujomer>();
         }
 
@@ -18,6 +19,7 @@ namespace TestApp2
         public string Sifra { get; set; }
 
         public virtual ICollection<Kvar> Kvars { get; set; }
+        public virtual ICollection<Racun> Racuns { get; set; }
         public virtual ICollection<Strujomer> Strujomers { get; set; }
     }
 }

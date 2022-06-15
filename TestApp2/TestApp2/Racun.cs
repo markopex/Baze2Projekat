@@ -14,5 +14,8 @@ namespace TestApp2
         public decimal Iznos { get; set; }
         public decimal Kwh { get; set; }
         public int Period { get; set; }
+
+        public virtual Potrosac PotrosacNavigation { get; set; }
+        public virtual Strujomer StrujomerBrojNavigation { get; set; }
     }
 }

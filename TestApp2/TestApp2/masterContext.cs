@@ -27,6 +27,8 @@ namespace TestApp2
         public virtual DbSet<Racun> Racuns { get; set; }
         public virtual DbSet<Radnik> Radniks { get; set; }
         public virtual DbSet<Strujomer> Strujomers { get; set; }
+        public IQueryable<StatistikaPotrosaca> StatistikaPotrosaca(int id) =>
+             Set<StatistikaPotrosaca>().FromSqlInterpolated($"select * from [dbo].[StatistikaPotrosaca]({id})");
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -41,11 +43,9 @@ namespace TestApp2
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-
             modelBuilder.Entity<StatistikaPotrosaca>(entity => {
                 entity.HasKey(i => i.Pot_Id);
             });
-
 
             modelBuilder.Entity<Elektricar>(entity =>
             {
@@ -253,6 +253,18 @@ namespace TestApp2
                 entity.Property(e => e.Potrosac).HasColumnName("POTROSAC");
 
                 entity.Property(e => e.StrujomerBroj).HasColumnName("STRUJOMER_BROJ");
+
+                entity.HasOne(d => d.PotrosacNavigation)
+                    .WithMany(p => p.Racuns)
+                    .HasForeignKey(d => d.Potrosac)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Racun_Potrosac");
+
+                entity.HasOne(d => d.StrujomerBrojNavigation)
+                    .WithMany(p => p.Racuns)
+                    .HasForeignKey(d => d.StrujomerBroj)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Racun_Strujomer");
             });
 
             modelBuilder.Entity<Radnik>(entity =>
@@ -318,8 +330,6 @@ namespace TestApp2
             OnModelCreatingPartial(modelBuilder);
         }
 
-        public IQueryable<StatistikaPotrosaca> StatistikaPotrosaca(int id) =>
-         Set<StatistikaPotrosaca>().FromSqlInterpolated($"select * from [dbo].[StatistikaPotrosaca]({id})");
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
