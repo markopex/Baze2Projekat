@@ -5,7 +5,7 @@ namespace TestApp2
 {
     internal class Program
     {
-        //private static masterContext dbContext = new masterContext();
+        private static masterContext dbContext = new masterContext();
         private static int GetStats(int potrosacId)
         {
             //return dbContext.Database.ExecuteSqlRaw($"select * from [dbo].[StatistikaPotrosaca]({potrosacId})");
@@ -15,10 +15,9 @@ namespace TestApp2
         {
             //var retVAl = GetStats(1);
             //Console.WriteLine(dbContext.StatistikaPotrosaca(1).FirstAsync().Result);
-            /*
+            
             var radnik1 = new Radnik()
             {
-                Jmbg = 1,
                 Ime = "Nikola",
                 Plata = 11230,
                 DatumRodj = DateTime.Now,
@@ -30,7 +29,6 @@ namespace TestApp2
             };
             var radnik2 = new Radnik()
             {
-                Jmbg = 2,
                 Ime = "Nemanja",
                 Plata = 24212,
                 DatumRodj = DateTime.Now,
@@ -42,7 +40,6 @@ namespace TestApp2
             };
             var radnik3 = new Radnik()
             {
-                Jmbg = 3,
                 Ime = "Bogdan",
                 Plata = 11230,
                 DatumRodj = DateTime.Now,
@@ -54,7 +51,6 @@ namespace TestApp2
             };
             var radnik4 = new Radnik()
             {
-                Jmbg = 4,
                 Ime = "Jordan",
                 Plata = 34543,
                 DatumRodj = DateTime.Now,
@@ -66,7 +62,6 @@ namespace TestApp2
             };
             var radnik5 = new Radnik()
             {
-                Jmbg = 5,
                 Ime = "Nikola",
                 Plata = 12321,
                 DatumRodj = DateTime.Now,
@@ -79,7 +74,6 @@ namespace TestApp2
 
             var radnik6 = new Radnik()
             {
-                Jmbg = 23423426,
                 Ime = "Radisa",
                 Plata = 12321,
                 DatumRodj = DateTime.Now,
@@ -87,7 +81,6 @@ namespace TestApp2
             };
             var radnik7 = new Radnik()
             {
-                Jmbg = 342342364,
                 Ime = "Vasilije",
                 Plata = 23423,
                 DatumRodj = DateTime.Now,
@@ -95,7 +88,6 @@ namespace TestApp2
             };
             var radnik8 = new Radnik()
             {
-                Jmbg = 3454,
                 Ime = "Marko",
                 Plata = 32432,
                 DatumRodj = DateTime.Now,
@@ -103,7 +95,6 @@ namespace TestApp2
             };
             var radnik9 = new Radnik()
             {
-                Jmbg = 345,
                 Ime = "Milica",
                 Plata = 23342,
                 DatumRodj = DateTime.Now,
@@ -130,31 +121,26 @@ namespace TestApp2
 
             var potrosac1 = new Potrosac()
             {
-                PotId = 1,
                 Naziv = "Magrrko",
                 Sifra = "marko1111"
             };
             var potrosac2 = new Potrosac()
             {
-                PotId = 2,
                 Naziv = "Nesfikola",
                 Sifra = "nikola22222"
             };
             var potrosac3 = new Potrosac()
             {
-                PotId = 3,
                 Naziv = "Nenfesad",
                 Sifra = "nenad3333"
             };
             var potrosac4 = new Potrosac()
             {
-                PotId = 4,
                 Naziv = "JKP Sfestandard",
                 Sifra = "standard"
             };
             var potrosac5 = new Potrosac()
             {
-                PotId = 5,
                 Naziv = "TC Merfsefkator",
                 Sifra = "tc1234567"
             };
@@ -265,7 +251,7 @@ namespace TestApp2
 
 
 
-            dbContext.SaveChanges();*/
+            dbContext.SaveChanges();
         }
     }
 }
