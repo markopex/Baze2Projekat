@@ -23,12 +23,10 @@ namespace TestApp2
         public virtual DbSet<Ocitavanje> Ocitavanjes { get; set; }
         public virtual DbSet<Odsustvo> Odsustvos { get; set; }
         public virtual DbSet<Oprema> Opremas { get; set; }
-        public virtual DbSet<Popravlja> Popravljas { get; set; }
         public virtual DbSet<Potrosac> Potrosacs { get; set; }
         public virtual DbSet<Racun> Racuns { get; set; }
         public virtual DbSet<Radnik> Radniks { get; set; }
         public virtual DbSet<Strujomer> Strujomers { get; set; }
-        public virtual DbSet<Zaduzuje> Zaduzujes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -43,9 +41,11 @@ namespace TestApp2
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<StatistikaPotrosaca>( entity => {
+
+            modelBuilder.Entity<StatistikaPotrosaca>(entity => {
                 entity.HasKey(i => i.Pot_Id);
             });
+
 
             modelBuilder.Entity<Elektricar>(entity =>
             {
@@ -73,6 +73,10 @@ namespace TestApp2
 
                 entity.Property(e => e.BrojKv).HasColumnName("BROJ_KV");
 
+                entity.Property(e => e.DatumPopravke)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DATUM_POPRAVKE");
+
                 entity.Property(e => e.DatumPr)
                     .HasColumnType("datetime")
                     .HasColumnName("DATUM_PR");
@@ -83,7 +87,14 @@ namespace TestApp2
                     .IsUnicode(false)
                     .HasColumnName("OPIS");
 
+                entity.Property(e => e.Popravio).HasColumnName("POPRAVIO");
+
                 entity.Property(e => e.PotId).HasColumnName("POT_ID");
+
+                entity.HasOne(d => d.PopravioNavigation)
+                    .WithMany(p => p.Kvars)
+                    .HasForeignKey(d => d.Popravio)
+                    .HasConstraintName("FK_KVAR_fk1");
 
                 entity.HasOne(d => d.Pot)
                     .WithMany(p => p.Kvars)
@@ -167,6 +178,10 @@ namespace TestApp2
 
                 entity.Property(e => e.OprId).HasColumnName("OPR_ID");
 
+                entity.Property(e => e.DatumZaduzivanja)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DATUM_ZADUZIVANJA");
+
                 entity.Property(e => e.Naziv)
                     .IsRequired()
                     .HasMaxLength(255)
@@ -178,33 +193,13 @@ namespace TestApp2
                     .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("OPIS");
-            });
 
-            modelBuilder.Entity<Popravlja>(entity =>
-            {
-                entity.ToTable("Popravlja");
+                entity.Property(e => e.Zaduzio).HasColumnName("ZADUZIO");
 
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.BrojKv).HasColumnName("BROJ_KV");
-
-                entity.Property(e => e.Datum)
-                    .HasColumnType("datetime")
-                    .HasColumnName("DATUM");
-
-                entity.Property(e => e.Radnik).HasColumnName("RADNIK");
-
-                entity.HasOne(d => d.BrojKvNavigation)
-                    .WithMany(p => p.Popravljas)
-                    .HasForeignKey(d => d.BrojKv)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Popravlja_fk0");
-
-                entity.HasOne(d => d.RadnikNavigation)
-                    .WithMany(p => p.Popravljas)
-                    .HasForeignKey(d => d.Radnik)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Popravlja_fk1");
+                entity.HasOne(d => d.ZaduzioNavigation)
+                    .WithMany(p => p.Opremas)
+                    .HasForeignKey(d => d.Zaduzio)
+                    .HasConstraintName("FK_Oprema_Radnik");
             });
 
             modelBuilder.Entity<Potrosac>(entity =>
@@ -320,37 +315,11 @@ namespace TestApp2
                     .HasConstraintName("Strujomer_fk0");
             });
 
-            modelBuilder.Entity<Zaduzuje>(entity =>
-            {
-                entity.ToTable("Zaduzuje");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Datum)
-                    .HasColumnType("datetime")
-                    .HasColumnName("DATUM");
-
-                entity.Property(e => e.ElektricarId).HasColumnName("ELEKTRICAR_ID");
-
-                entity.Property(e => e.OprId).HasColumnName("OPR_ID");
-
-                entity.HasOne(d => d.Elektricar)
-                    .WithMany(p => p.Zaduzujes)
-                    .HasForeignKey(d => d.ElektricarId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Zaduzuje_fk0");
-
-                entity.HasOne(d => d.Opr)
-                    .WithMany(p => p.Zaduzujes)
-                    .HasForeignKey(d => d.OprId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("Zaduzuje_fk1");
-            });
-
             OnModelCreatingPartial(modelBuilder);
         }
+
         public IQueryable<StatistikaPotrosaca> StatistikaPotrosaca(int id) =>
-             Set<StatistikaPotrosaca>().FromSqlInterpolated($"select * from [dbo].[StatistikaPotrosaca]({id})");
+         Set<StatistikaPotrosaca>().FromSqlInterpolated($"select * from [dbo].[StatistikaPotrosaca]({id})");
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

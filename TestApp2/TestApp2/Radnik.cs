@@ -10,6 +10,7 @@ namespace TestApp2
         public Radnik()
         {
             Odsustvos = new HashSet<Odsustvo>();
+            Opremas = new HashSet<Oprema>();
         }
 
         public int Jmbg { get; set; }
@@ -20,5 +21,6 @@ namespace TestApp2
 
         public virtual Elektricar Elektricar { get; set; }
         public virtual ICollection<Odsustvo> Odsustvos { get; set; }
+        public virtual ICollection<Oprema> Opremas { get; set; }
     }
 }

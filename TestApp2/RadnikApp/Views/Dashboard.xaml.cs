@@ -29,7 +29,6 @@ namespace RadnikApp.Views
         private CollectionViewSource radniciViewSource;
         private CollectionViewSource odsustvaViewSource;
         private CollectionViewSource opremaViewSource;
-        private CollectionViewSource zaduzenjeViewSource;
         private CollectionViewSource kvaroviViewSource;
         private CollectionViewSource ocitavanjaViewSource;
         private CollectionViewSource racuniViewSource;
@@ -47,7 +46,6 @@ namespace RadnikApp.Views
             radniciViewSource = (CollectionViewSource)FindResource(nameof(radniciViewSource));
             odsustvaViewSource = (CollectionViewSource)FindResource(nameof(odsustvaViewSource));
             opremaViewSource = (CollectionViewSource)FindResource(nameof(opremaViewSource));
-            zaduzenjeViewSource = (CollectionViewSource)FindResource(nameof(zaduzenjeViewSource));
             kvaroviViewSource = (CollectionViewSource)FindResource(nameof(kvaroviViewSource));
             ocitavanjaViewSource = (CollectionViewSource)FindResource(nameof(ocitavanjaViewSource));
             racuniViewSource = (CollectionViewSource)FindResource(nameof(racuniViewSource));
@@ -71,7 +69,7 @@ namespace RadnikApp.Views
                     new TipStrujomera()
                     {
                         Tip = (int)ETipStujomera.ANALOG,
-                        Naziv = "Glupi"
+                        Naziv = "Analogni"
                     }
                 });
 
@@ -86,9 +84,6 @@ namespace RadnikApp.Views
 
             dbContext.Opremas.Load();
             opremaViewSource.Source = dbContext.Opremas.Local.ToObservableCollection();
-
-            //dbContext.Zaduzujes.Load();
-            //zaduzenjeViewSource.Source = dbContext.Zaduzujes.Local.ToObservableCollection();
 
             dbContext.Kvars.Load();
             kvaroviViewSource.Source = dbContext.Kvars.Local.ToObservableCollection();

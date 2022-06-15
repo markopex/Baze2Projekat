@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RadnikApp.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="550" d:DesignWidth="800">
     <UserControl.Resources>
         <CollectionViewSource x:Key="potrosaciViewSource"/>
         <CollectionViewSource x:Key="strujomeriViewSource"/>
@@ -13,7 +13,6 @@
         <CollectionViewSource x:Key="radniciViewSource"/>
         <CollectionViewSource x:Key="odsustvaViewSource"/>
         <CollectionViewSource x:Key="opremaViewSource"/>
-        <CollectionViewSource x:Key="zaduzenjeViewSource"/>
         <CollectionViewSource x:Key="kvaroviViewSource"/>
         <CollectionViewSource x:Key="ocitavanjaViewSource"/>
         <CollectionViewSource x:Key="racuniViewSource"/>
@@ -169,36 +168,16 @@
                             <DataGridTextColumn Binding="{Binding Opis}" 
                                             Width="100"
                                             Header="Opis"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Zaduzenje opreme">
-                <StackPanel>
-                    <DataGrid x:Name="ZaduzenjeDataGrid"
-                          AutoGenerateColumns="False"
-                          Height="450"
-                          IsReadOnly="False"
-                          ItemsSource="{Binding Source={StaticResource zaduzenjeViewSource}}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Datum}" 
-                                            Header="Datum zaduzenja"
-                                            Width="100"
-                                            IsReadOnly="True"/>
                             <DataGridComboBoxColumn 
-                                            Header="Radnik"
-                                            Width="150"
+                                            Header="Zaduzio"
+                                            Width="100"
                                             ItemsSource="{Binding Source={StaticResource radniciViewSource}}"
                                             DisplayMemberPath="Ime"
-                                            SelectedValueBinding="{Binding ElektricarId}"
+                                            SelectedValueBinding="{Binding Zaduzio}"
                                             SelectedValuePath="Jmbg"/>
-                            <DataGridComboBoxColumn 
-                                            Header="Oprema"
-                                            Width="150"
-                                            ItemsSource="{Binding Source={StaticResource opremaViewSource}}"
-                                            DisplayMemberPath="Naziv"
-                                            SelectedValueBinding="{Binding OprId}"
-                                            SelectedValuePath="OprId"/>
+                            <DataGridTextColumn Binding="{Binding DatumZaduzivanja}" 
+                                            Width="100"
+                                            Header="Datum zaduzivanja"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
@@ -208,7 +187,7 @@
                     <DataGrid x:Name="KvaroviDataGrid"
                           AutoGenerateColumns="False"
                           Height="450"
-                          IsReadOnly="True"
+                          IsReadOnly="False"
                           ItemsSource="{Binding Source={StaticResource kvaroviViewSource}}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding BrojKv}" 
@@ -227,9 +206,42 @@
                             <DataGridTextColumn Binding="{Binding Opis}" 
                                             Width="100"
                                             Header="Opis"/>
-                            <DataGridTextColumn Binding="{Binding Status}" 
+                            <DataGridComboBoxColumn 
+                                            Header="Popravio"
                                             Width="100"
-                                            Header="Status"/>
+                                            IsReadOnly="True"
+                                            ItemsSource="{Binding Source={StaticResource radniciViewSource}}"
+                                            DisplayMemberPath="Ime"
+                                            SelectedValueBinding="{Binding Popravio}"
+                                            SelectedValuePath="Jmbg"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Popravke Kvarova">
+                <StackPanel>
+                    <DataGrid x:Name="PopravkeDataGrid"
+                          AutoGenerateColumns="False"
+                          Height="450"
+                          IsReadOnly="False"
+                          ItemsSource="{Binding Source={StaticResource kvaroviViewSource}}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding BrojKv}" 
+                                            Width="100"
+                                            Header="BrojKv"/>
+                            <DataGridTextColumn Binding="{Binding DatumPr}" 
+                                            Width="100"
+                                            Header="Datum prijave"/>
+                            <DataGridTextColumn Binding="{Binding Opis}" 
+                                            Width="100"
+                                            Header="Opis kvara"/>
+                            <DataGridComboBoxColumn 
+                                            Header="Popravio"
+                                            Width="100"
+                                            ItemsSource="{Binding Source={StaticResource radniciViewSource}}"
+                                            DisplayMemberPath="Ime"
+                                            SelectedValueBinding="{Binding Popravio}"
+                                            SelectedValuePath="Jmbg"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
